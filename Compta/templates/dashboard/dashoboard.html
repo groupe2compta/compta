@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .link{
+        margin-top: 90px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .link a{
+        margin: 15px;
+        width: 250px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .content{
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .content .liste-etudiants table tr th{
+        background-color: #4d5997;
+        color: white;
+    }
+</style>
+
+
+
+<div class="link">
+    <a href="{% url 'listeEtudiant' %}" class="btn btn-dark">Etudiants</a>
+    <a href="{% url 'listeFrais' %}" class="btn btn-warning">Fixer les Frais Académiques</a>
+    <a href="{% url 'listeTransaction' %}" class="btn btn-danger">Payer les Frais</a>
+</div>
+ <div class="content">
+    <div class="titre">
+        <p>Liste des etudiants et des Transactions</p>
+    </div>
+    <div class="liste-etudiants">
+        <table class="table table-bordered table-responsive">
+            <tr>
+                <th>N°</th>
+                <th>Matricule</th>
+                <th>Nom</th>
+                <th>PostNom</th>
+                <th>Prénom</th>
+                <th>Inscription</th>
+                <th>Reinscription</th>
+                <th>Session</th>
+                <th>Tranche 1</th>
+                <th>Tranche 2</th>
+                <th>Tranche 3</th>
+            </tr>
+            {% for etudiants in liste_etudiant %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{etudiants.matricule}}</td>
+                <td>{{etudiants.nom}}</td>
+                <td>{{etudiants.postnom}}</td>
+                <td>{{etudiants.prenom}}</td>
+                <td>{{etudiants.getMontantInscription}}</td>
+                <td>{{etudiants.getMontantReinscription}}</td>
+                <td>{{etudiants.getSession}}</td>
+                <td>{{etudiants.getTranche1}}</td>
+                <td>{{etudiants.getTranche2}}</td>
+                <td>{{etudiants.getTranche3}}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="8">Pas d'etudiants</td>
+              </tr>
+            {% endfor %}
+        </table>
+    </div>
+ </div>
+{% endblock content %}

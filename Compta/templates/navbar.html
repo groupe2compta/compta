@@ -1,0 +1,39 @@
+
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    header nav{
+        background-color: teal;
+        height: 80px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items:center;
+        z-index: 100;
+    }
+    header nav .titre a{
+        color: white;
+        margin-left: 15px;
+    }
+    header nav a{
+        margin-right: 15px;
+    }
+
+
+</style>
+
+<header>
+    <nav>
+        <div class="titre">
+            <a href="{% url 'dashoboard' %}"><h3>Gestion des paiements des frais académiques</h3></a>
+        </div>
+        {% if user.is_authenticated %}
+          <a href="{% url 'deconnexion' %}" class="btn btn-light">Déconnexion</a>
+        {% endif %}
+    </nav>
+</header>

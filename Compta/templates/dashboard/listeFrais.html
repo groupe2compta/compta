@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+<style>
+    .content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 90px;
+    }
+</style>
+
+<div class="content">
+    <div class="titre">
+        <p>Liste des Frais</p>
+        <a href="" class="btn btn-info">Ajouter les Frais</a>
+    </div>
+    <div class="contenu">
+        <table class="table table-responsive table-bordered">
+            <tr>
+                <th>N°</th>
+                <th>Afficher</th>
+                <th>Designation</th>
+                <th>Montant</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
+            </tr>
+            {% for liste_frais in liste_frais %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td><a href="" class="btn btn-dark">Afficher</a></td>
+                <td>{{liste_frais.designation}}</td>
+                <td>{{liste_frais.montant}}</td>
+                <td><a href="" class="btn btn-danger">Modifier</a></td>
+                <td><a href="" class="btn btn-success">Supprimer</a></td>
+              </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}

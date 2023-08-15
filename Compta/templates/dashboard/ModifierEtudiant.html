@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<style>
+    .content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 80px;
+        background-color: darkgray;
+    }
+    .content .contenu{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 400px;
+        padding: 25px;
+        background-color: white;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        border-radius: 25px;
+    }
+    .content .contenu form{
+        width: 95%;
+    }
+    .content .contenu form button{
+       margin-top: 15px;
+    }
+
+</style>
+
+
+
+<div class="content">
+    <div class="contenu">
+        {% for message in messages %}
+          <div class="alert alert-info">
+            <p style="color: darkcyan;">{{message}}</p>
+          </div>
+        {% endfor %}
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{form}}
+            <button type="submit" class=" btn btn-danger btn-block">Valider les Modifications</button>
+        </form>
+    </div>
+</div>
+  
+{% endblock content %}

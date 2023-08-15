@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    .content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color:#97c1f7;
+        margin-top: 80px;
+        flex-direction: column;
+       
+    }
+    .content .alert{
+        margin-top: 30px;
+    }
+    .content .contenu{
+        width: 350px;
+        background-color: white;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 15px;
+    }
+    .content .contenu form{
+        width: 90%;
+        margin: 3%;
+    }
+    .content .contenu form button{
+     margin-top: 10px;
+    }
+    .content .contenu form a{
+     margin-top: 20px;
+    }
+    
+</style>
+
+
+
+<div class="content">
+    {% for message in messages %}
+      <div class="alert alert-danger">
+        <p style="color: maroon;">{{message}}</p>
+      </div>
+    {% endfor %}
+    <div class="contenu">
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{form}}
+            <button type="submit" class="btn btn-danger btn-block">Se connecter</button>
+            <a href="">Mot de passe oublié ?</a>
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock content %}
