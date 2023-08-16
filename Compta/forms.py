@@ -5,8 +5,8 @@ from .import models
 
 
 class FormConnexion(forms.Form):
-    nom=forms.CharField(widget=forms.TextInput(attrs={"class":'form-control'}))
-    password=forms.CharField(widget=forms.PasswordInput(attrs={"class":'form-control'}))
+    nom=forms.CharField(widget=forms.TextInput(attrs={"class":'form-control', 'placeholder':'username *'}))
+    password=forms.CharField(widget=forms.PasswordInput(attrs={"class":'form-control', 'placeholder':'password *'}))
 
 
 
@@ -28,11 +28,12 @@ class FormAjoutFrais(forms.ModelForm):
     class Meta:
         model=models.Frais
         fields=[
-            'designation', 'montant'
+            'designation', 'montant', 'annee'
         ]
         widgets={
-            "designation":forms.TextInput(attrs={"class":"form-control"}),
+            "designation":forms.Select(attrs={"class":"form-control"}),
             "montant":forms.NumberInput(attrs={"class":"form-control"}),
+            "annee":forms.Select(attrs={"class":"form-control"}),
         }
 
 class FormAjoutTransaction(forms.ModelForm):

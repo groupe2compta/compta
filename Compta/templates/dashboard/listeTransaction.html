@@ -67,7 +67,7 @@
                 <td>{{transaction.montant}}</td>
                 <td>{{transaction.date_creation}}</td>
                 <td><a href="{% url 'modifTransaction' transaction.id %}" class="btn btn-success">Modifier</a></td>
-                <td><a href="" class="btn btn-danger">Suppprimer</a></td>
+                <td><a href="{% url 'suppTransaction' transaction.id %}" class="btn btn-danger">Suppprimer</a></td>
               </tr>
               {% empty %}
               <tr>

@@ -110,53 +110,12 @@ def ajouterTransaction(request):
             elif montant > frais.montant:
                 messages.error(request, "Montant supérieur au montant prévu !")
             elif montant + sommes > frais.montant :
-                messages.error(request, f"Cet étudiant a déjà donné une partie {sommes}  il lui reste {reste}")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "INSCR":
-                new_transaction=models.Transaction.objects.create(etudiant=etudiant, frais=frais,montant=montant)
-                new_transaction.etudiant.atteintFraisInscription = True
-                new_transaction.etudiant.save()
-                new_transaction.save()
-                form=forms.FormAjoutTransaction()
-                messages.success(request, "Frais d'inscription payé avec succès !")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "REINSCR":
-                new_transaction=models.Transaction.objects.create(etudiant=etudiant, frais=frais,montant=montant)
-                new_transaction.etudiant.atteintFraisReinscription = True
-                new_transaction.etudiant.save()
-                new_transaction.save()
-                form=forms.FormAjoutTransaction()
-                messages.success(request, "Frais de reinscription payé avec succès !")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "S":
-                new_transaction=models.Transaction.objects.create(etudiant=etudiant, frais=frais,montant=montant)
-                new_transaction.etudiant.atteintFraisSession = True
-                new_transaction.etudiant.save()
-                new_transaction.save()
-                form=forms.FormAjoutTransaction()
-                messages.success(request, "Frais de Session payé avec succès !")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "T1":
-                new_transaction=models.Transaction.objects.create(etudiant=etudiant, frais=frais,montant=montant)
-                new_transaction.etudiant.atteintFraisTranche1 = True
-                new_transaction.etudiant.save()
-                new_transaction.save()
-                form=forms.FormAjoutTransaction()
-                messages.success(request, "Frais de la Première tranche payé avec succès !")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "T2":
-                new_transaction=models.Transaction.objects.create(etudiant=etudiant, frais=frais,montant=montant)
-                new_transaction.etudiant.atteintFraisTranche2 = True
-                new_transaction.etudiant.save()
-                new_transaction.save()
-                form=forms.FormAjoutTransaction()
-                messages.success(request, "Frais de la Deuxième tranche payé avec succès !")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "T3":
-                new_transaction=models.Transaction.objects.create(etudiant=etudiant, frais=frais,montant=montant)
-                new_transaction.etudiant.atteintFraisTranche3 = True
-                new_transaction.etudiant.save()
-                new_transaction.save()
-                form=forms.FormAjoutTransaction()
-                messages.success(request, "Frais de la Troisième tranche payé avec succès !")
+                messages.error(request, f"Cet étudiant a déjà ce frais {frais.designation} donné il lui reste {reste}")
             else:
                 new_transaction=models.Transaction.objects.create(etudiant=etudiant, frais=frais,montant=montant)
                 new_transaction.save()
                 messages.success(request, "Frais payé et enregistré avec succès !")
+                form=forms.FormAjoutTransaction()
         else:
             messages.error(request, "Formulaire invalide !")
     return render(request, 'dashboard/ajouterTransaction.html', {"form":form})
@@ -164,6 +123,7 @@ def ajouterTransaction(request):
 
 def modifTransaction(request, id):
     get_id=models.Transaction.objects.get(id=id)
+    oldMontant=get_id.montant
     form=forms.FormAjoutTransaction(instance=get_id)
     if request.method == "POST":
         form=forms.FormAjoutTransaction(request.POST,instance=get_id)
@@ -173,74 +133,70 @@ def modifTransaction(request, id):
             montant=form.cleaned_data['montant']
             verification_versement=models.Transaction.objects.filter(etudiant=etudiant, frais=frais)
             sommes=sum([ligne.montant for ligne in verification_versement])
-            reste=frais.montant - sommes
+            diminuer=sommes - oldMontant
             if montant < 1:
                 messages.error(request, "Impossible de donner un montant inférieur à 1 !")
             elif montant > frais.montant:
                 messages.error(request, "Montant supérieur au montant prévu !")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "INSCR":
-                get_id.etudiant.atteintFraisInscription = True
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant < frais.montant or montant + sommes < frais.montant and frais.designation == "INSCR":
-                get_id.etudiant.atteintFraisInscription = False
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "REINSCR":
-                get_id.etudiant.atteintFraisInscription = True
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant < frais.montant or montant + sommes < frais.montant and frais.designation == "REINSCR":
-                get_id.etudiant.atteintFraisInscription = False
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "S":
-                get_id.etudiant.atteintFraisInscription = True
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant < frais.montant or montant + sommes < frais.montant and frais.designation == "S":
-                get_id.etudiant.atteintFraisInscription = False
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "T1":
-                get_id.etudiant.atteintFraisInscription = True
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant < frais.montant or montant + sommes < frais.montant and frais.designation == "T1":
-                get_id.etudiant.atteintFraisInscription = False
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "T2":
-                get_id.etudiant.atteintFraisInscription = True
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant < frais.montant or montant + sommes < frais.montant and frais.designation == "T2":
-                get_id.etudiant.atteintFraisInscription = False
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant == frais.montant or montant + sommes == frais.montant and frais.designation == "T3":
-                get_id.etudiant.atteintFraisInscription = True
-                get_id.save()
-                form.save()
-                return redirect("listeTransaction")
-            elif montant < frais.montant or montant + sommes < frais.montant and frais.designation == "T3":
-                get_id.etudiant.atteintFraisInscription = False
-                get_id.etudiant.save()
-                form.save()
-                return redirect("listeTransaction")
+            elif montant + diminuer > frais.montant :
+                messages.error(request, "Impossible d'effectuer cette Opération !")
             else:
-                messages.error(request, "Impossible d'apporter les modifications !")
+                form.save()
+                return redirect('listeTransaction')
         else:
             messages.error(request, "Formulaire invalide !")
     return render(request, 'dashboard/modifierTransaction.html',{"form":form})
-        
+
+def FixerFrais(request):
+    form=forms.FormAjoutFrais()
+    if request.method == "POST":
+        form=forms.FormAjoutFrais(request.POST)
+        if form.is_valid():
+            designation=form.cleaned_data['designation']
+            montant=form.cleaned_data['montant']
+            annee=form.cleaned_data['annee']
+            verification=models.Frais.objects.filter(designation=designation, annee=annee).exists()
+            if verification :
+                messages.error(request, "Cette année avec cette designation des frais existe déjà !")
+            else:
+                form.save()
+                messages.success(request, "Frais fixé avec succès !")
+                form=forms.FormAjoutFrais()
+        else:
+            messages.error(request, "Impossible de fixer ce frais")
+    return render(request,'dashboard/fixerFrais.html', {"form":form})
+
+
+def ChangeFrais(request, id):
+    get_id=models.Frais.objects.get(id=id)
+    form=forms.FormAjoutFrais(instance=get_id)
+    if request.method == "POST":
+        form=forms.FormAjoutFrais(request.POST, instance=get_id)
+        if form.is_valid():
+            designation=form.cleaned_data['designation']
+            montant=form.cleaned_data['montant']
+            annee=form.cleaned_data['annee']
+            verification=models.Frais.objects.filter(designation=designation,montant=montant, annee=annee).exists()
+            if verification :
+                messages.error(request, "Tu n'as apporté aucune modification !")
+            else:
+                form.save()
+                messages.success(request, "Frais fixé avec succès !")
+                form=forms.FormAjoutFrais()
+        else:
+            messages.error(request, "Impossible de fixer ce frais")
+    return render(request,'dashboard/changerFrais.html', {"form":form})
+
+def suppFrais(request, id):
+    get_id=models.Frais.objects.get(id=id)
+    if request.method == "POST":
+        get_id.delete()
+        return redirect('listeFrais')
+    return render(request, "dashboard/confirmSuppFrais.html")
+
+def suppTransaction(request, id):
+    get_id=models.Transaction.objects.get(id=id)
+    if request.method == 'POST':
+        get_id.delete()
+        return redirect('listeTransaction')
+    return render(request, "dashboard/confirmSuppTransaction.html")

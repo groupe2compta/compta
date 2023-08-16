@@ -24,12 +24,6 @@ class Etudiant(models.Model):
     nom=models.CharField(max_length=155)
     postnom=models.CharField(max_length=155)
     prenom=models.CharField(max_length=155)
-    atteintFraisInscription=models.BooleanField(default=False)
-    atteintFraisReinscription=models.BooleanField(default=False)
-    atteintFraisSession=models.BooleanField(default=False)
-    atteintFraisTranche1=models.BooleanField(default=False)
-    atteintFraisTranche2=models.BooleanField(default=False)
-    atteintFraisTranche3=models.BooleanField(default=False)
     date_creation=models.DateField(auto_now_add=True)
     date_modification=models.DateField(auto_now=True)
 
