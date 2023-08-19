@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    .link {
+        margin-top: 90px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .link a {
+        margin: 15px;
+        width: 250px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .content {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .content .contenu table tr th {
+        background-color: #4d5997;
+        color: white;
+    }
+</style>
+
+
+
+<div class="link">
+    <a href="{% url 'FixerFrais' %}" class="btn btn-warning">Fixer les Frais Académiques</a>
+</div>
+<div class="titre">
+    <p style="text-align: center;">Liste des Années Académiques</p>
+</div>
+<div class="content">
+    <div class="contenu">
+        <table class="table table-bordered table-responsive">
+            <tr>
+                <th>N°</th>
+                <th>Frais</th>
+                <th>Désignation</th>
+                <th>Date Creation</th>
+                <th>Date Modification</th>
+            </tr>
+            {% for liste_annee in liste_annee %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td><a href="{% url 'listeFrais' liste_annee.id %}" class="btn btn-dark">Voir les Frais fixés</a></td>
+                <td>{{liste_annee.designation}}</td>
+                <td>{{liste_annee.date_creation}}</td>
+                <td>{{liste_annee.date_modification}}</td>
+            </tr>
+              
+            {% endfor %}
+        </table>
+    </div>
+</div>
+  
+{% endblock content %}
+

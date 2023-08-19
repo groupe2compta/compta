@@ -34,7 +34,6 @@
         width: 50%;
         padding: 15px;
         margin-bottom: 15px;
-        background-color: rgb(229, 232, 235);
     }
     .content form button{
         margin-top: 15px;
@@ -54,13 +53,14 @@
         <p>Liste des etudiants</p>
     </div>
     <form action="" method="get">
-        <input type="text" placeholder="rechercher" class="form-control" name="rechercher" required>
+        <input type="text" placeholder="rechercher" class="form-control" name="rechercher">
         <button type="submit" class="btn btn-success">Rechercher</button>
     </form>
     <div class="liste-etudiants">
         <table class="table table-bordered table-responsive">
             <tr>
                 <th>N°</th>
+                <th>Afficher</th>
                 <th>Matricule</th>
                 <th>Nom</th>
                 <th>PostNom</th>
@@ -72,6 +72,7 @@
             {% for etudiants in liste_etudiant %}
               <tr>
                 <td>{{forloop.counter}}</td>
+                <td><a href="" class="btn btn-dark">Afficher</a></td>
                 <td>{{etudiants.matricule}}</td>
                 <td>{{etudiants.nom}}</td>
                 <td>{{etudiants.postnom}}</td>

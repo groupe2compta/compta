@@ -3,14 +3,15 @@
 {% block content %}
 
 <style>
-    .link{
+    .link {
         margin-top: 90px;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
     }
-    .link a{
+
+    .link a {
         margin: 15px;
         width: 250px;
         height: 60px;
@@ -18,14 +19,16 @@
         justify-content: center;
         align-items: center;
     }
-    .content{
-        
+
+    .content {
+
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
     }
-    .content .liste-etudiants table tr th{
+
+    .content .liste-etudiants table tr th {
         background-color: #4d5997;
         color: white;
     }
@@ -35,12 +38,11 @@
 
 <div class="link">
     <a href="{% url 'listeEtudiant' %}" class="btn btn-dark">Etudiants</a>
-    <a href="{% url 'listeAnne' %}" class="btn btn-warning">Frais Académiques</a>
     <a href="{% url 'listeTransaction' %}" class="btn btn-danger">Payer les Frais</a>
 </div>
- <div class="content">
+<div class="content">
     <div class="titre">
-        <p>Liste des etudiants et des Transactions</p>
+        <p>Liste des etudiants en Ordre avec tous les Frais</p>
     </div>
     <div class="liste-etudiants">
         <table class="table table-bordered table-responsive">
@@ -59,7 +61,14 @@
                 <th style="background-color: gray;">Total</th>
             </tr>
             {% for etudiants in liste_etudiant %}
-              <tr>
+            {% for inscription in inscription %}
+            {% for reinscription in reinscription %}
+            {% for session in session %}
+            {% for tranche1 in tranche1 %}
+            {% for tranche2 in tranche2 %}
+            {% for tranche3 in tranche3 %}
+            {% if etudiants.getMontantInscription == inscription.montant and etudiants.getMontantReinscription == reinscription.montant and etudiants.getSession == session.montant and etudiants.getTranche1 == tranche1.montant and etudiants.getTranche2 == tranche2.montant and etudiants.getTranche3 == tranche3.montant  %}
+            <tr>
                 <td>{{forloop.counter}}</td>
                 <td>{{etudiants.matricule}}</td>
                 <td>{{etudiants.nom}}</td>
@@ -72,13 +81,19 @@
                 <td>{{etudiants.getTranche2}}</td>
                 <td>{{etudiants.getTranche3}}</td>
                 <td style="background-color: gray;color: white;">{{etudiants.totalEtudiantOrdre}}</td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="8">Pas d'etudiants</td>
-              </tr>
+            </tr>
+            
+            {% endif %}
             {% endfor %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+          
+            {% endfor %}
+
         </table>
     </div>
- </div>
+</div>
 {% endblock content %}

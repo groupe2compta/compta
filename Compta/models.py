@@ -57,16 +57,22 @@ class Etudiant(models.Model):
     def getTranche3(self):
         tranche3=self.transaction_set.filter(frais__designation="T3")
         return sum([ligne.montant for ligne in tranche3])
+    
+    @property
+    def getFraisFixer(self):
+        liste_frais=self.transaction_set.all()
+        return sum([ligne.frais.montant for ligne in liste_frais])
+    
+    @property
+    def totalEtudiantOrdre(self):
+        return sum([self.getMontantInscription, self.getMontantReinscription, self.getSession, self.getTranche1, self.getTranche2, self.getTranche3])
+
 
 
     def __str__(self):
         return f"{self.matricule} : {self.nom}-{self.postnom}-{self.prenom}"
-
-
     
-
-
-
+    
 
 class Annee(models.Model):
     designation=models.CharField(max_length=155)

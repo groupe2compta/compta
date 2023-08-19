@@ -44,7 +44,6 @@
         <table class="table table-bordered table-responsive">
             <tr>
                 <th>N°</th>
-                <th>Afficher</th>
                 <th>Matricule</th>
                 <th>Nom</th>
                 <th>PostNom</th>
@@ -58,7 +57,6 @@
             {% for transaction in liste_transaction %}
               <tr>
                 <td>{{forloop.counter}}</td>
-                <td><a href="" class="btn btn-info">Afficher</a></td>
                 <td>{{transaction.etudiant.matricule}}</td>
                 <td>{{transaction.etudiant.nom}}</td>
                 <td>{{transaction.etudiant.postnom}}</td>

@@ -6,6 +6,7 @@ from .import forms
 from .import models
 
 
+
 def index(request):
     form=forms.FormConnexion()
     if request.method == "POST":
@@ -36,10 +37,12 @@ def dashoboard(request):
     }
     return render(request, "dashboard/dashoboard.html", context)
 
-def listeFrais(request):
-    liste_frais=models.Frais.objects.all()
+def listeFrais(request, id):
+    get_id=models.Annee.objects.get(id=id)
+    liste_frais=models.Frais.objects.filter(annee=get_id)
     context={
-        "liste_frais":liste_frais
+        "liste_frais":liste_frais,
+        'get_id':get_id
     }
     return render(request, "dashboard/listeFrais.html", context)
 
@@ -52,6 +55,11 @@ def listeTransaction(request):
 
 def listeEtudiant(request):
     liste_etudiant=models.Etudiant.objects.all()
+    if request.method == 'GET':
+        rechercher=request.GET.get('rechercher')
+        if rechercher:
+            liste_etudiant=models.Etudiant.objects.filter(nom__icontains=rechercher)
+            return render(request, "dashboard/RechercheEtudiant.html",{"liste_etudiant":liste_etudiant})
     context={
         "liste_etudiant":liste_etudiant
     }
@@ -200,3 +208,53 @@ def suppTransaction(request, id):
         get_id.delete()
         return redirect('listeTransaction')
     return render(request, "dashboard/confirmSuppTransaction.html")
+
+
+def listeEtudiantOrdre(request):
+    liste_etudiant=models.Etudiant.objects.all()
+    inscription=models.Frais.objects.filter(designation='INSCR')
+    reinscription=models.Frais.objects.filter(designation='REINSCR')
+    session=models.Frais.objects.filter(designation='S')
+    tranche1=models.Frais.objects.filter(designation='T1')
+    tranche2=models.Frais.objects.filter(designation='T2')
+    tranche3=models.Frais.objects.filter(designation='T3')
+    context={
+        "liste_etudiant":liste_etudiant, 
+        "inscription":inscription, 
+        'reinscription':reinscription,
+        'session':session,
+        "tranche1":tranche1,
+        "tranche2":tranche2,
+        "tranche3":tranche3,
+        }
+    return render(request, "dashboard/listeEtudiantOrdre.html", context)
+
+
+def listeEtudiantNonOrdre(request):
+    liste_etudiant=models.Etudiant.objects.filter()
+    inscription=models.Frais.objects.filter(designation='INSCR')
+    reinscription=models.Frais.objects.filter(designation='REINSCR')
+    session=models.Frais.objects.filter(designation='S')
+    tranche1=models.Frais.objects.filter(designation='T1')
+    tranche2=models.Frais.objects.filter(designation='T2')
+    tranche3=models.Frais.objects.filter(designation='T3')
+    frais=models.Frais.objects.all()
+    sommes_annee=sum([ligne.montant for ligne in frais])
+    context={
+        "liste_etudiant":liste_etudiant, 
+        "inscription":inscription, 
+        'reinscription':reinscription,
+        'session':session,
+        "tranche1":tranche1,
+        "tranche2":tranche2,
+        "tranche3":tranche3,
+        'sommes_annee':sommes_annee
+        }
+    return render(request, "dashboard/listeEtudiantNonOrdre.html", context)
+
+def listeAnne(request):
+    liste_annee=models.Annee.objects.all()
+    context={
+        'liste_annee':liste_annee
+    }
+    return render(request, 'dashboard/listeAnnee.html', context)
